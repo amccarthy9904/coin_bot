@@ -12,10 +12,14 @@ from tensorflow.keras.layers.experimental import preprocessing
 
 class Dataset:
 
+    data_set = None
+    data_labels = None
+
     def __init__(self) -> None:
         pass
 
     def load_data(self):
         data_frame = pd.read_csv('data/BTC-USD.csv', names=['Open','High','Low','Close','Volume','Green'])
+        self.data_labels = data_frame.pop('Green')
+        self.data_set = np.array(data_frame)
         print(data_frame.head())
-        data_labels = data_frame.pop('Green')
