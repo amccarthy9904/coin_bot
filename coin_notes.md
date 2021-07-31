@@ -16,26 +16,25 @@ input last 50 days OHLC data
 
 ## Dataset
 
-1 Build
+### Building Dataset
 using [Yahoo_finance](https://finance.yahoo.com/quote/BTC-USD/history?period1=1410825600&period2=1627084800&interval=1d&filter=history&frequency=1d&includeAdjustedClose=true)
 stored in BTC-USD_orig.csv
 removed 4 rows with nulls
 use alter_data.py to create BTC-USD.csv, same data but remove date and adj close
 
-2 Figure out how tensorflow wants it
+### How does tensorflow want the data?
 [load_data_csv_tutorial] (https://www.tensorflow.org/tutorials/load_data/csv)
 
 in alter_data.py
+create csv containing model inputs
+each row is an input for the model with label at end
+labels will be seperated at runtime
+each row in csv [(yesterday) O,H,L,C,V, (day before yesterday) O,H,L,C,V, ... x48, lable for today]
+* actual order in csv is reversed, the first values in the row are for the earliest day that we can see ie yesterday x50 while yesterday is the final datapoint in the row
+at runtime:
 create 2d numpy array inputs
-each ind of array will be an input to the model
-inputs = ind 0 = [(yesterday) O,H,L,C,V, (day before yesterday) O,H,L,C,V, ... x48]
-create numpy array labels
-labels = ind 0 = [0 or 1 (price up or down for today)]
-
-
-
-
-3 figure out how to use it to train
+create regular arry labels
+read from csv and seperate inputs and labels into 2 arrays
 
 ## Model
 
@@ -62,10 +61,11 @@ Not sure how these should be laid out
 #### Output Layer
 One Node 0 or 1
 if 0 next day will be red
-if 1 next day will be green
+if 1 next day will be green 
 green means next days close > open
 
 
+### Training the model
 
 
 
